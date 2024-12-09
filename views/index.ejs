@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            overflow-x: hidden;
+        }
+
+        /* Thanh điều hướng */
+        .navbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            display: flex;
+            justify-content: space-around;
+            padding: 15px 0;
+            background-color: transparent;
+            color: white;
+            z-index: 1000;
+            transition: background-color 0.3s, color 0.3s;
+            justify-content: center; /* Căn các mục ra giữa */
+        }
+
+        .navbar.scrolled {
+            background-color: #006699;
+            color: white;
+        }
+
+        .navbar a {
+            color: inherit;
+            text-decoration: none;
+            font-size: 1em;
+            padding: 10px 15px;
+            margin-right: 10px;
+            font-weight: bold;
+            border-radius: 5px;
+            transition: background-color 0.3s, transform 0.2s;
+        }
+
+        .navbar a:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+            transform: translateY(-3px);
+        }
+
+        /* Slide 1 */
+        .slide1 {
+            height: 100vh;
+            width: 100%;
+            background: url('https://mega.com.vn/media/news/0106_hinh-nen-4k-may-tinh19.jpg') no-repeat center center/cover;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: white;
+        }
+
+        .main-content {
+            max-width: 600px;
+            text-align: center;
+            padding: 0 20px;
+        }
+
+        .main-content h1 {
+            font-size: 3em; /* Tăng kích thước chữ để nổi bật */
+            font-weight: 500; /* Dùng font-weight 800 để chữ đậm và sắc nét hơn */
+            color: #FFFFFF; /* Giữ màu trắng để nổi bật trên nền */
+            text-shadow: 3px 3px 8px rgba(0, 0, 0, 0.6); /* Tăng kích thước và độ mờ của bóng để tạo chiều sâu */
+            line-height: 1.1; /* Giảm line-height để chữ gần nhau hơn */
+            margin-bottom: 50px; /* Giảm khoảng cách giữa tiêu đề và nút để cân đối hơn */
+            letter-spacing: 1px; /* Thêm khoảng cách giữa các chữ cái để tạo cảm giác hiện đại */
+        }
+
+        .main-content a {
+            display: inline-block;
+            padding: 12px 30px;
+            font-size: 1.2em;
+            font-weight: bold;
+            color: white;
+            text-decoration: none;
+            border-radius: 25px;
+            background: linear-gradient(90deg, #007BFF, #4594d4);
+            transition: transform 0.3s;
+        }
+
+        .main-content a:hover {
+            background-color: rgba(255, 255, 255, 0.5); /* Màu trắng hào nhoáng khi di chuột vào */
+            border: 2px solid #FFFFFF; /* Thêm viền trắng khi di chuột vào */
+        }
+
+        /* Slide 2 */
+        .slide2 {
+            height: 100vh;
+            width: 100%;
+            background-color: #f9f9f9;
+            padding: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+
+        .introduction {
+            max-width: 1000px;
+            color: #333;
+        }
+
+        .introduction h2 {
+            color: #006699;
+            font-size: 2.5em;
+            margin-bottom: 20px;
+        }
+
+        .introduction p {
+            font-size: 1.1em;
+            line-height: 1.6;
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        /* Nút cuộn lên đầu trang */
+        .scroll-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            font-size: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            transition: opacity 0.3s;
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        .scroll-to-top.show {
+            opacity: 1;
+            visibility: visible;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="navbar">
+        <a href="#">Trang Chủ</a>
+        <a href="#slide2">Về Chúng Tôi</a>
+        <a href="#">Cơ Hội Nghề Nghiệp</a>
+        <a href="#">Câu Chuyện</a>
+        <a href="#">Chương Trình</a>
+        <a href="#">Liên Hệ</a>
+    </div>
+
+    <!-- Slide 1 -->
+    <div class="slide1">
+        <div class="main-content">
+            <h1>Phát triển sự nghiệp<br>tại miền đất nhân tài</h1>
+            <a href="/register/Registeration">Gia nhập cùng chúng tôi</a>
+        </div>
+    </div>
+
+    <!-- Slide 2 (Phần Giới Thiệu) -->
+    <div class="slide2" id="slide2" >
+        <div class="introduction">
+            <h2>Giới thiệu</h2>
+            <p>
+                Chào mừng bạn đến với Miền Đất Nhân Tài! Trong chiến lược phát triển 5 năm lần thứ 3 (2022-2026), VPBank xác định mục tiêu trở thành ngân hàng có vị trí vững chắc trong Top 3 ngân hàng lớn nhất Việt Nam và đạt quy mô thuộc Top 100 ngân hàng lớn nhất châu Á, góp phần thúc đẩy sự phát triển bền vững và thịnh vượng của quốc gia và cộng đồng.
+            </p>
+            <p>
+                Trên hành trình hiện thực hóa sứ mệnh vì một Việt Nam thịnh vượng, VPBank tập trung nỗ lực xây dựng một hình mẫu VPBanker lý tưởng với 04 phương diện phát triển toàn diện gồm: Thịnh vượng Thân trí, Thịnh vượng Tinh thần, Thịnh vượng Tài chính và Thịnh vượng Cộng đồng.
+            </p>
+        </div>
+    </div>
+
+    <!-- Nút cuộn lên đầu trang -->
+    <button class="scroll-to-top" id="scrollToTopBtn">&#8593;</button>
+
+    <script>
+        // Hiệu ứng cuộn lên đầu trang
+        const scrollToTopBtn = document.getElementById('scrollToTopBtn');
+        const navbar = document.querySelector('.navbar');
+        const slide2 = document.querySelector('.slide2');
+
+        window.addEventListener('scroll', () => {
+            if (window.pageYOffset > 300) {
+                scrollToTopBtn.classList.add('show');
+            } else {
+                scrollToTopBtn.classList.remove('show');
+            }
+
+            // Thay đổi màu nền của navbar khi đến Slide 2
+            if (window.scrollY >= slide2.offsetTop - 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+
+        scrollToTopBtn.addEventListener('click', () => {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+    </script>
+</body>
+
+</html>

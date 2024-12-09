@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registration</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            font-family: 'Arial', sans-serif;
+            background: url('https://images.hdqwalls.com/wallpapers/city-lights-buildings-4k-og.jpg') no-repeat center center/cover;
+            color: #333;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            padding: 20px;
+        }
+        .container {
+            background: rgba(255, 255, 255, 0.85);
+            border-radius: 15px;
+            padding: 30px;
+            max-width: 500px;
+            width: 100%;
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.3);
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #222;
+            font-size: 2em;
+        }
+        .form_field {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: #555;
+        }
+        input[type="text"], input[type="number"], input[type="file"], select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+        button {
+            width: 100%;
+            padding: 10px 15px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 1em;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 10;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5em;
+            text-align: center;
+        }
+        .show {
+            display: flex;
+        }
+        /* Hiệu ứng pháo hoa */
+        .fireworks {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 15;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Registration</h1>
+        <main>
+            <form id="registrationForm" enctype="multipart/form-data">
+                <div class="form_field">
+                    <label for="q1">Select a position</label>
+                    <select name="q1" required>
+                        <option>Software Engineer</option>
+                        <option>Data Scientist</option>
+                        <option>Data Engineer</option>
+                        <option>UI / UX Designer</option>
+                    </select>
+                </div>
+                <div class="form_field">
+                    <label for="q2">How many years of experience in this field?</label>
+                    <input type="number" required min="0" name="q2" id="q2">
+                </div>
+                <div class="form_field">
+                    <label for="q3">What makes you unique among all candidates?</label>
+                    <input type="text" required name="q3" id="q3">
+                </div>
+                <div class="form_field">
+                    <label for="q4">Why should we choose you?</label>
+                    <input type="text" required name="q4" id="q4">
+                </div>
+                <div class="form_field">
+                    <label for="q5">Explain your career in this field briefly (Max: 100 words)</label>
+                    <input type="text" required name="q5" id="q5">
+                </div>
+                <div class="form_field">
+                    <label for="q6">Upload your CV (only PDF or JPG/PNG)</label>
+                    <input type="file" required name="q6" id="q6">
+                </div>
+                <button type="submit">Submit</button>
+            </form>
+        </main>
+    </div>
+
+    <div class="overlay" id="successOverlay">
+        🎉 Congratulations! 🎉<br>
+        Your application was successful!
+    </div>
+    <canvas class="fireworks"></canvas>
+
+    <script>
+        const form = document.getElementById('registrationForm');
+        const successOverlay = document.getElementById('successOverlay');
+        const fireworksCanvas = document.querySelector('.fireworks');
+        const ctx = fireworksCanvas.getContext('2d');
+        let fireworksTimeout;
+
+        form.addEventListener('submit', async function (event) {
+            event.preventDefault(); // Ngăn chặn gửi form mặc định
+
+            const formData = new FormData(form); // Tạo đối tượng FormData từ form
+
+            try {
+                const response = await fetch('/register/Registeration', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                const text = await response.text(); // Lấy phản hồi dưới dạng văn bản
+                let data;
+                try {
+                    data = JSON.parse(text); // Thử phân tích cú pháp JSON
+                } catch (e) {
+                    data = { success: response.ok }; // Nếu không phải JSON, sử dụng response.ok
+                }
+
+                if (data.success) {
+                    // Hiển thị thông báo chúc mừng và hiệu ứng pháo hoa
+                    successOverlay.classList.add('show');
+                    fireworksCanvas.width = window.innerWidth;
+                    fireworksCanvas.height = window.innerHeight;
+                    createFireworks();
+
+                    // Ẩn thông báo và xóa hiệu ứng pháo hoa sau 5 giây
+                    fireworksTimeout = setTimeout(() => {
+                        successOverlay.classList.remove('show');
+                        clearFireworks();
+                    }, 5000);
+                } else {
+                    alert('Failed to upload file. Please try again.');
+                }
+            } catch (error) {
+                console.error('Error uploading file:', error);
+                alert('An error occurred. Please try again.');
+            }
+        });
+
+        function createFireworks() {
+            const particles = [];
+            const particleCount = 100;
+
+            function drawFirework() {
+                ctx.clearRect(0, 0, fireworksCanvas.width, fireworksCanvas.height);
+                particles.forEach((particle, index) => {
+                    ctx.beginPath();
+                    ctx.arc(particle.x, particle.y, particle.radius, 0, Math.PI * 2);
+                    ctx.fillStyle = particle.color;
+                    ctx.fill();
+
+                    // Update particle position
+                    particle.x += particle.vx;
+                    particle.y += particle.vy;
+                    particle.alpha -= 0.01;
+
+                    if (particle.alpha <= 0) {
+                        particles.splice(index, 1);
+                    }
+                });
+
+                if (particles.length > 0) {
+                    requestAnimationFrame(drawFirework);
+                }
+            }
+
+            for (let i = 0; i < particleCount; i++) {
+                particles.push({
+                    x: Math.random() * fireworksCanvas.width,
+                    y: Math.random() * fireworksCanvas.height / 2,
+                    radius: Math.random() * 5 + 2,
+                    color: `hsl(${Math.random() * 360}, 100%, 50%)`,
+                    vx: (Math.random() - 0.5) * 4,
+                    vy: (Math.random() - 0.5) * 4,
+                    alpha: 1
+                });
+            }
+
+            drawFirework();
+        }
+
+        function clearFireworks() {
+            ctx.clearRect(0, 0, fireworksCanvas.width, fireworksCanvas.height);
+        }
+    </script>    
+</body>
+</html>
